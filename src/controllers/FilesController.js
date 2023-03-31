@@ -3,7 +3,7 @@ const { FilesService } = require("../services");
 const path = require('path');
 const FileKeyService = require("../services");
 
-const FILE_FOLDER = process.env.FOLDER || "uploads";
+const { FILE_FOLDER } = require("../config");
 
 class FilesController {
   createFile = async (req, res) => {

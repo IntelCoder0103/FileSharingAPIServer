@@ -2,7 +2,8 @@ const fs = require('fs');
 const path = require('path');
 const FileKeyService = require('./FileKeyService');
 
-const FILE_FOLDER = process.env.FOLDER || "uploads";
+const { FILE_FOLDER } = require("../config");
+
 
 class FilesService{
 
