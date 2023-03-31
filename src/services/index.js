@@ -1,6 +1,5 @@
-const localFileService = require('./LocalFilesService');
 const FileKeyService = require('./FileKeyService');
-const FilesService = localFileService;
+const FilesService = require('./FilesService');
 
 module.exports = {
   FilesService,

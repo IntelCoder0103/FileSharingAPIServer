@@ -4,13 +4,15 @@ const bodyParser = require("body-parser");
 const routes = require("./routes");
 const app = express();
 
-require('./jobs/StorageCleanup').start();
-
 const { FILE_FOLDER } = require('./config');
 
 
 const multer = require("multer");
-const upload = multer({ dest: FILE_FOLDER });
+
+const upload = multer({
+  storage: multer.memoryStorage()
+});
+
 // Body Parser
 app.use(bodyParser.urlencoded({ extended: false }));
 // Multer
@@ -23,6 +25,8 @@ app.listen(PORT);
 
 console.log(`Server started on port - ${PORT}`);
 
+
+require('./jobs/StorageCleanup').start();
 // const CryptoJS = require("crypto-js");
 // const enc = CryptoJS.AES.encrypt("AI12", "secret", {iv: 0});
 // console.log(enc.toString(CryptoJS.format.OpenSSL));

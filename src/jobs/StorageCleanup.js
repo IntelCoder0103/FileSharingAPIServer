@@ -5,7 +5,6 @@ const { CronJob } = require('cron');
 const { FILE_FOLDER, INACTIVE_PERIOD } = require("../config");
 
 const clearInactiveFiles = async () => {
-  console.log('clear inactive');
   // get the current time
   const now = new Date().getTime();
 
@@ -32,8 +31,7 @@ const clearInactiveFiles = async () => {
 };
 
 const job = new CronJob("0 0 0 * * *", clearInactiveFiles);
-
 module.exports = {
   clearInactiveFiles,
-  start: clearInactiveFiles
+  start: job.start.bind(job)
 }

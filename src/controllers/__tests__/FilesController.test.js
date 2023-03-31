@@ -9,7 +9,7 @@ describe("FilesController", () => {
   });
 
   describe("createFile", () => {
-    it("should call FilesService.createFile with the correct arguments", async () => {
+    it("should call FilesService.createFile with the correct arguments and upload file to storage", async () => {
       const req = { file: { mimetype: "text/plain", name: "file.txt", originalName: "file.txt" } };
       const res = { status: jest.fn().mockReturnThis(), send: jest.fn() };
       console.log(FilesService);
@@ -29,8 +29,9 @@ describe("FilesController", () => {
     it("should call FilesService.getFile and send the file to the client", async () => {
       const req = { params: { publicKey: "publicKey123" } };
       const res = { setHeader: jest.fn(), sendFile: jest.fn(), status: jest.fn().mockReturnThis() };
-      const getFileSpy = jest.spyOn(FilesService, "getFile").mockReturnValue({
-        filename: "file123.txt",
+      const mockPipe = jest.fn();
+      const getFileSpy = jest.spyOn(FilesService, "getFile").mockResolvedValue({
+        stream: {pipe: mockPipe},
         originalname: "file.txt",
         mimetype: "text/plain",
       });
@@ -40,7 +41,8 @@ describe("FilesController", () => {
       expect(getFileSpy).toHaveBeenCalledWith(req.params.publicKey);
       expect(res.setHeader).toHaveBeenCalledWith("Content-Type", "text/plain");
       expect(res.setHeader).toHaveBeenCalledWith("Content-Disposition", "attachment; filename=file.txt");
-      expect(res.sendFile).toHaveBeenCalledWith(path.resolve(`./${FILE_FOLDER}/file123.txt`));
+      expect(mockPipe).toHaveBeenCalledWith(res);
+      //expect(res.sendFile).toHaveBeenCalledWith(path.resolve(`./${FILE_FOLDER}/file123.txt`));
 
       getFileSpy.mockRestore();
     });
