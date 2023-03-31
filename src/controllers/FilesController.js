@@ -8,8 +8,9 @@ const { FILE_FOLDER } = require("../config");
 class FilesController {
   createFile = async (req, res) => {
     const { file } = req;
-    console.log(file.mimetype, file.name, file.originalName, file);
+    file.filename = uuid();
     
+    console.log(file.mimetype, file.name, file.originalName, file);
 
     const keys = await FilesService.createFile(file);
 

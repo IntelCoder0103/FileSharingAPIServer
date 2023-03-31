@@ -4,13 +4,13 @@ const StorageService = require("./StorageService");
 class FilesService {
   createFile = async (file) => {
     const keys = FileKeyService.generateFileKeys(file);
-    file.filename = uuid();
     await StorageService.uploadFile(file);
     return keys;
   };
 
   getFile = async (publicKey) => {
     const { filename, originalname, mimetype } = FileKeyService.decryptPublicKey(publicKey);
+    console.log(filename);
     const stream = await StorageService.downloadStream(filename);
     return {stream, originalname, mimetype};
   };
